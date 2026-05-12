@@ -1,29 +1,10 @@
-from fastapi import APIRouter
+import httpx
+from fastapi import APIRouter, HTTPException
 from models import ExternalCheckData, ExternalCheckResponse
 
 router = APIRouter()
 
-# Simulated university database records — replace with real HTTP call later
-_MOCK_DB: list[dict] = [
-    {
-        "ime": "Ana",
-        "prezime": "Kovač",
-        "broj_indeksa": "0123456",
-        "broj_diplome": "D-2020-001",
-        "fakultet": "Pravni fakultet",
-        "odsjek": "Pravo",
-        "godina_zavrsetka": "2020/2021",
-    },
-    {
-        "ime": "Emir",
-        "prezime": "Husić",
-        "broj_indeksa": "0654321",
-        "broj_diplome": "D-2015-042",
-        "fakultet": "Ekonomski fakultet",
-        "odsjek": "Menadžment",
-        "godina_zavrsetka": "2015/2016",
-    },
-]
+EXTERNAL_API_URL = "https://api.university.example.com/alumni/check"
 
 
 @router.get("/check", response_model=ExternalCheckResponse)
@@ -33,13 +14,30 @@ def check_alumni(
     broj_indeksa: str,
     broj_diplome: str,
 ):
-    for record in _MOCK_DB:
-        if (
-            record["broj_indeksa"] == broj_indeksa
-            and record["broj_diplome"] == broj_diplome
-        ):
-            return ExternalCheckResponse(
-                found=True,
-                data=ExternalCheckData(**record),
-            )
-    return ExternalCheckResponse(found=False, data=None)
+    try:
+        response = httpx.get(
+            EXTERNAL_API_URL,
+            params={
+                "ime": ime,
+                "prezime": prezime,
+                "broj_indeksa": broj_indeksa,
+                "broj_diplome": broj_diplome,
+            },
+            timeout=10.0,
+        )
+        response.raise_for_status()
+        payload = response.json()
+    except httpx.HTTPStatusError as e:
+        if e.response.status_code == 404:
+            return ExternalCheckResponse(found=False, data=None)
+        raise HTTPException(status_code=502, detail="External API error")
+    except httpx.RequestError:
+        raise HTTPException(status_code=502, detail="External API unreachable")
+
+    if not payload.get("found"):
+        return ExternalCheckResponse(found=False, data=None)
+
+    return ExternalCheckResponse(
+        found=True,
+        data=ExternalCheckData(**payload["data"]),
+    )
