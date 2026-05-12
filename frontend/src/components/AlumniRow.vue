@@ -96,17 +96,94 @@ async function verify(action) {
 </script>
 
 <style scoped>
-td { padding: 8px 12px; vertical-align: top; }
-.badge { padding: 2px 8px; border-radius: 10px; font-size: 0.8rem; font-weight: 600; }
-.badge.pending { background: #fef3c7; color: #92400e; }
+tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.1s;
+}
+
+tr:last-child {
+  border-bottom: none;
+}
+
+tr:hover {
+  background: var(--bg);
+}
+
+td {
+  padding: 10px 14px;
+  vertical-align: top;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.badge.pending  { background: #fef3c7; color: #92400e; }
 .badge.verified { background: #d1fae5; color: #065f46; }
 .badge.rejected { background: #fee2e2; color: #991b1b; }
-.actions { display: flex; flex-direction: column; gap: 6px; min-width: 160px; }
-button { padding: 4px 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+
+button {
+  padding: 4px 12px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 500;
+  font-family: inherit;
+  transition: opacity 0.15s;
+}
+
+button:hover { opacity: 0.85; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+
 .btn-approve { background: #059669; color: white; }
-.btn-reject { background: #dc2626; color: white; }
-.btn-check { background: #2563eb; color: white; }
-.check-comparison { display: flex; gap: 1rem; margin-bottom: 8px; }
-.check-comparison pre { font-size: 0.78rem; background: #f3f4f6; padding: 6px; border-radius: 4px; white-space: pre-wrap; }
-.not-found { color: #dc2626; font-weight: 600; }
+.btn-reject  { background: #dc2626; color: white; }
+.btn-check   { background: #2563eb; color: white; }
+
+.check-comparison {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 8px;
+}
+
+.check-comparison > div {
+  flex: 1;
+}
+
+.check-comparison strong {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.check-comparison pre {
+  font-size: 0.78rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 6px 8px;
+  border-radius: var(--radius);
+  white-space: pre-wrap;
+  margin: 0;
+  color: var(--text);
+}
+
+.not-found {
+  font-size: 0.82rem;
+  color: #dc2626;
+  font-weight: 600;
+}
 </style>
