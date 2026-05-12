@@ -140,12 +140,100 @@ async function submit() {
 </script>
 
 <style scoped>
-.registration { max-width: 540px; margin: 2rem auto; padding: 0 1rem; }
-.field { margin-bottom: 1rem; display: flex; flex-direction: column; gap: 4px; }
-label { font-weight: 600; font-size: 0.9rem; }
-input, select { padding: 6px 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
-button { padding: 8px 20px; background: #2563eb; color: white; border: none; border-radius: 4px; cursor: pointer; }
-button:disabled { opacity: 0.6; cursor: default; }
-.success { background: #d1fae5; padding: 1rem; border-radius: 4px; color: #065f46; }
-.errors { background: #fee2e2; padding: 0.75rem; border-radius: 4px; color: #991b1b; }
+.registration {
+  max-width: 520px;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 2rem;
+}
+
+h1 {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.field {
+  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+input,
+select {
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+input:focus,
+select:focus {
+  border-color: #6b7280;
+}
+
+input:disabled,
+select:disabled {
+  background: var(--bg);
+  color: var(--text-muted);
+  cursor: not-allowed;
+}
+
+button {
+  margin-top: 0.5rem;
+  padding: 8px 20px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: var(--radius);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+button:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 1rem;
+  border-radius: var(--radius);
+  color: #166534;
+  font-size: 0.9rem;
+}
+
+.errors {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius);
+  color: #991b1b;
+  font-size: 0.875rem;
+}
+
+.errors p {
+  margin: 0;
+}
 </style>
