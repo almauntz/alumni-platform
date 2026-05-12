@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+backend/venv/
+backend/alumni.db
+*.db
+
+# Node
+node_modules/
+frontend/dist/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
