@@ -34,10 +34,46 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            cd alumni-platform/backend
+            set -e
+
+            echo "Connected to EC2"
+            whoami
+            pwd
+
+            cd ~/alumni-platform
+
+            echo "Pulling latest code"
             git pull origin main
+
+            cd backend
+
+            echo "Checking Python"
+            python3 --version
+
+            echo "Creating venv if missing"
+            if [ ! -d "venv" ]; then
+              python3 -m venv venv
+            fi
+
+            echo "Activating venv"
             source venv/bin/activate
+
+            echo "Installing dependencies"
+            pip install --upgrade pip
             pip install -r requirements.txt
-            pkill -f uvicorn || true
-            nohup python -m uvicorn main:app --host 0.0.0.0 --port 8000 > /dev/null 2>&1 &
+
+            echo "Stopping old uvicorn process"
+            pkill -f "uvicorn main:app" || true
+
+            echo "Starting backend"
+            nohup python -m uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
+
+            sleep 3
+
+            echo "Checking app log"
+            cat app.log || true
+
+            echo "Checking running process"
+            pgrep -af uvicorn || true
+
             echo "Deploy done"
