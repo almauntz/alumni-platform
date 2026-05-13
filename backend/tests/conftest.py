@@ -26,3 +26,17 @@ def client(test_engine):
     app.dependency_overrides[get_session] = get_test_session
     yield TestClient(app)
     app.dependency_overrides.clear()
+
+@pytest.fixture
+def alumni_data():
+    return {
+        "ime": "Ana",
+        "prezime": "Kovač",
+        "spol": "F",
+        "broj_indeksa": "0123456",
+        "fakultet": "Pravni fakultet",
+        "odsjek": "Pravo",
+        "godina_pocetka": "2016/2017",
+        "godina_zavrsetka": "2020/2021",
+        "broj_diplome": "D-2020-001"
+    }
