@@ -4,7 +4,7 @@ from models import ExternalCheckData, ExternalCheckResponse
 
 router = APIRouter()
 
-EXTERNAL_API_URL = "https://api.university.example.com/alumni/check"
+EXTERNAL_API_URL = "https://api.alumni.untz.ba/alumni/check"
 
 
 @router.get("/check", response_model=ExternalCheckResponse)
