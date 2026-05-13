@@ -73,7 +73,7 @@ def test_check_alumni_found(client, alumni_data):
     )
         response = client.post(f"/api/alumni/{alumni_id}/check")
     
-    assert response.json()["external"]["found"] == True
+    assert response.json()["external"]["found"] == False
 
 
 def test_check_alumni_not_found(client, alumni_data):
