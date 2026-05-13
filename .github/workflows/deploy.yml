@@ -62,18 +62,35 @@ jobs:
             pip install --upgrade pip
             pip install -r requirements.txt
 
-            echo "Stopping old uvicorn process"
-            pkill -f "[u]vicorn main:app" || true
+            echo "Stopping old backend process"
+
+            if [ -f app.pid ]; then
+              OLD_PID=$(cat app.pid)
+
+              if ps -p $OLD_PID > /dev/null 2>&1; then
+                echo "Stopping process $OLD_PID"
+                kill $OLD_PID || true
+                sleep 2
+              else
+                echo "Old PID file exists, but process is not running"
+              fi
+
+              rm -f app.pid
+            else
+              echo "No old PID file found"
+            fi
 
             echo "Starting backend"
             nohup python -m uvicorn main:app --host 0.0.0.0 --port 8000 > app.log 2>&1 &
 
+            echo $! > app.pid
+
             sleep 3
 
-            echo "Checking app log"
-            cat app.log || true
+            echo "Started process:"
+            cat app.pid
 
-            echo "Checking running process"
-            pgrep -af uvicorn || true
+            echo "App log:"
+            cat app.log || true
 
             echo "Deploy done"
